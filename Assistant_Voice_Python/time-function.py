@@ -9,13 +9,7 @@ def speak(audio):
 
 def time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
-    speak("La hora es " +Time)
+    speak("The hour is " +Time)
 
-a = ""
+
 time()
-while a!= "exit":
-    a = input()
-    if a == "exit":
-        speak ("Goodbye")
-    else:
-        speak (a)
