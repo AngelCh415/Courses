@@ -42,13 +42,14 @@ def wishme():
 
 def takeCommand():
     r = sr.Recognizer()
-    with sr.Microphone() as source:
+    mic = sr.Microphone()
+    with mic as source:
         print("Listening...")
         r.pause_threshold = 1 #Wait 1 second before listen
         audio = r.listen(source)
     try:
         print("Recognizing...")
-        query = r.recognize_google(audio, 'en=US')
+        query = r.recognize_google(audio)
         print(query)
     except Exception as e:
         print(e)
