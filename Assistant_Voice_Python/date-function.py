@@ -3,6 +3,8 @@ import datetime
 import numpy
 
 engine = pyttsx3.init() #Init
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id) 
 
 
 def speak(audio):
