@@ -5,5 +5,7 @@ engine = pyttsx3.init() #Init
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
-a = input()
-speak (a)
+a = ""
+while a!= "exit":
+    a = input()
+    speak (a)
