@@ -6,6 +6,13 @@ import wikipedia #pip install wikipedia
 import smtplib
 import webbrowser as wb
 import os
+from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy #pip install spotipy
+import sys
+import pprint
+import webbrowser as web
+import pyautogui #pip install pyautogui
+from time import sleep 
 
 engine = pyttsx3.init() #Init
 voices = engine.getProperty('voices')
@@ -91,9 +98,61 @@ if __name__ == "__main__":
             chromepath = "C:/Users/angel/AppData/Local/BraveSoftware/Brave-Browser/Application/brave.exe %s" #path of your browser
             search = takeCommand().lower()
             wb.get(chromepath).open_new_tab(search + ".com")
-        elif "logout" in query:
+        elif "log out" in query:
             os.system("shutdown -l")
         elif "shutdown" in query:
             os.system("shutdown /s /t 1")
         elif "restart" in query:
             os.system("shutdown /r /t 1")
+        elif "play songs" in query:
+            song_dir = "" #Path of the song
+            songs = os.listdir(song_dir)
+            os.startfile(os.path.join(song_dir, songs[0]))
+        elif "spotify" in query:
+            #to get client_id and client_secret go  https://developer.spotify.com/dashboard/
+            client_id = '8aff2ace649a4629b1781c59d4dcc565'
+            client_secret='391383f3b8bf4de7a70ee6fa1c407608'
+            flag = 0
+            speak("Which song do I search?")
+            correct = False
+            while correct == False:
+                song = takeCommand().upper()
+                speak("Is that your song?")
+                print(song)
+                if takeCommand().lower() == "yes":
+                    correct = True
+                else:
+                    speak("Said that again please")
+            speak("Do you lnow the author?")
+            correct = False
+            if takeCommand().lower()== "yes":
+                while correct == False:
+                    author = takeCommand()
+                    speak("Is that your author?")
+                    print(author)
+                    if takeCommand().lower() == "yes":
+                        correct = True
+                    else:
+                        speak("Said that again please")
+            else:
+                author = ''
+            #song = 'Fin del Mundo'.upper()
+            sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id,client_secret))
+            if len(author)>0:
+                result = sp.search(author)
+                for i in range(0, len(result["tracks"]["items"])):
+                    name_song = result["tracks"]["items"][i]["name"].upper()
+                    if song in name_song:
+                        flag = 1
+                        web.open(result["tracks"]["items"][i]["uri"])
+                        sleep(5)
+                        pyautogui.press("enter")
+            if flag == 0:
+                song = song.replace(" ", "%20")
+                web.open(f'spotify:search:{song}')
+                sleep(5)
+                for i in range(18):
+                    pyautogui.press("tab")        
+                for i in range(2):
+                    pyautogui.press("enter")
+                    sleep(1)
